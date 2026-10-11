@@ -1,0 +1,14 @@
+{
+  "standingThresholds": [20, 70, 180],
+  "dailyFreeRuns": 8,
+  "extraRunFee": "10",
+  "experiments": [
+    { "id": 0, "name": "Origin", "failBps": 10000, "failScar": 7, "minStanding": 0, "failMin": 5, "failMax": 5, "winMin": 0, "winMax": 0, "oncePerToken": true },
+    { "id": 1, "name": "Overclock Brain", "failBps": 8000, "failScar": 1, "minStanding": 0, "failMin": 8, "failMax": 12, "winMin": 3, "winMax": 5, "oncePerToken": false },
+    { "id": 2, "name": "Inject Chaos Serum", "failBps": 7500, "failScar": 2, "minStanding": 0, "failMin": 5, "failMax": 9, "winMin": 2, "winMax": 4, "oncePerToken": false },
+    { "id": 3, "name": "Time Travel Attempt", "failBps": 8500, "failScar": 3, "minStanding": 0, "failMin": 10, "failMax": 15, "winMin": 4, "winMax": 6, "oncePerToken": false },
+    { "id": 4, "name": "Feed Forbidden $CHOG", "failBps": 7500, "failScar": 4, "minStanding": 0, "failMin": 6, "failMax": 10, "winMin": 3, "winMax": 5, "oncePerToken": false },
+    { "id": 5, "name": "Gravity Off Switch", "failBps": 8000, "failScar": 5, "minStanding": 1, "failMin": 6, "failMax": 10, "winMin": 3, "winMax": 5, "oncePerToken": false },
+    { "id": 6, "name": "Haunted Server Rack", "failBps": 8500, "failScar": 6, "minStanding": 2, "failMin": 10, "failMax": 14, "winMin": 4, "winMax": 6, "oncePerToken": false }
+  ]
+}

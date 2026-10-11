@@ -1,0 +1,8 @@
+{
+  "chainId": 10143,
+  "mockChog": "0x2ae8ef416A0180959af97E855F471370c084E3C0",
+  "mockChogToken": "0xF3b7ce8acceE96a5149781D7BA3d2919c942861d",
+  "randomProbe": "0x6051C637b123fc968C6383E35fd710fE6501AF34",
+  "registry": "0x7F51132c9f7A3354af3166828107D292e8aa7786",
+  "deployBlock": 70225187
+}

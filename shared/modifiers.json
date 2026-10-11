@@ -1,0 +1,8 @@
+[
+  { "id": 1, "text": "Time Travel is 10 points safer today", "experimentId": 3, "failDeltaBps": -1000, "weirdnessMulBps": 10000 },
+  { "id": 2, "text": "Everything is 20% weirder today", "experimentId": 0, "failDeltaBps": 0, "weirdnessMulBps": 12000 },
+  { "id": 3, "text": "Overclock Brain is riskier but 50% weirder today", "experimentId": 1, "failDeltaBps": 500, "weirdnessMulBps": 15000 },
+  { "id": 4, "text": "Forbidden $CHOG is 10 points safer today", "experimentId": 4, "failDeltaBps": -1000, "weirdnessMulBps": 10000 },
+  { "id": 5, "text": "Serum day: extra eyes pay 50% more", "experimentId": 2, "failDeltaBps": 0, "weirdnessMulBps": 15000 },
+  { "id": 6, "text": "A calm day: everything is 5 points safer", "experimentId": 0, "failDeltaBps": -500, "weirdnessMulBps": 10000 }
+]
