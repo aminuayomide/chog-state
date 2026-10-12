@@ -1,0 +1,104 @@
+{
+  "entries": {
+    "0": "Something went wrong at the very beginning. He was loved anyway.",
+    "1": "The experiment failed. A mascot was born. Nobody has apologised.",
+    "2": "It was supposed to be a robot. It was a hedgehog-cat. We kept him.",
+
+    "100": "Brain melted. Now thinks in pure chaos.",
+    "101": "He did the math at 400%. The math did him back.",
+    "102": "Smoke from the ears. Honestly, an improvement in posture.",
+    "150": "Clarity. For exactly one minute.",
+    "151": "A flawless thought. He's framing it.",
+
+    "200": "Serum rejected. Grew an extra eye instead.",
+    "201": "The serum said no. The eye said hello.",
+    "202": "Side effect: eyes. Plural. Possibly more later.",
+    "250": "Controlled chaos. Management is suspicious.",
+    "251": "The chaos behaved. Everyone is nervous.",
+
+    "300": "Came back older and more unhinged.",
+    "301": "He visited Tuesday. Tuesday is not recovering.",
+    "302": "Returned five minutes early. Refuses to say what he saw.",
+    "350": "He saw the future. He won't say.",
+    "351": "A glimpse of tomorrow. It had snacks.",
+
+    "400": "Ate it. Now speaks only in memes.",
+    "401": "Forbidden for a reason. He's still chewing.",
+    "402": "It tasted like \"wen\". He has not stopped asking.",
+    "450": "Digested. Somehow.",
+    "451": "Not a single side effect. Terrifying.",
+
+    "500": "Floated off. Left his shadow behind.",
+    "501": "Gravity was optional. He chose wrong.",
+    "502": "Rose three feet. The ceiling was not consulted.",
+    "550": "Soft landing. Barely.",
+    "551": "Floated, then landed. Graceful, by his standards.",
+
+    "600": "The rack looked back. Now there are two of him.",
+    "601": "Something in the logs waved. He waved back.",
+    "602": "A cold draught. A faint echo. He's fine, he says. Twice.",
+    "650": "A friendly ghost waved. Nothing followed him home.",
+    "651": "The haunting was polite. He tipped his hat.",
+
+    "1000": "His first scar. He's weirdly proud.",
+    "1001": "A breakthrough. Nobody knows what to do with it.",
+    "1002": "Ten failures survived. He's basically seasoned.",
+    "1003": "Twenty-five experiments. He's earned a lanyard.",
+    "1004": "Three failures in a row. He's still smiling.",
+    "1005": "Six in a row. He's stopped asking why.",
+    "1006": "Nine in a row. At this point it's a lifestyle.",
+    "1007": "People are starting to know him. He's handling it badly.",
+    "1008": "Marked. The scars have become a personality.",
+    "1009": "Legendary. Mascots are born from failure. He's proof.",
+
+    "2001": "Paradox: he met himself coming back. They didn't get along.",
+    "2002": "Brainrot: forbidden snack, overclocked brain. Say less.",
+    "2003": "Chaos Engine: the chaos now has a motor.",
+
+    "3000": "A new keeper. The scars stayed."
+  },
+  "originCinematic": [
+    "Once, someone asked an AI for a robot.",
+    "It made a hedgehog-cat with a frog for a dad.",
+    "The experiment failed. Everyone loved him anyway.",
+    "Let's give him a life worth scarring."
+  ],
+  "ui": {
+    "standing": {
+      "0": { "name": "Blank", "tagline": "Nobody knows him yet." },
+      "1": { "name": "Known", "tagline": "People wave. He waves back, mostly." },
+      "2": { "name": "Marked", "tagline": "The scars have become a personality." },
+      "3": { "name": "Legendary", "tagline": "He has seen things. He survived them." }
+    },
+    "risk": {
+      "0": { "name": "Careful", "hint": "Fewer failures, smaller scars." },
+      "1": { "name": "Normal", "hint": "The usual amount of mistakes." },
+      "2": { "name": "Reckless", "hint": "More failures, deeper scars." }
+    },
+    "afterScar": [
+      "Another one. He's keeping count.",
+      "He'll wear that well.",
+      "That one's going to stay.",
+      "He didn't even flinch. Much."
+    ],
+    "afterSuccess": [
+      "Nothing exploded. Management is suspicious.",
+      "It worked. Nobody knows why.",
+      "A good day. Don't tell the others."
+    ],
+    "notYours": "This Chog isn't yours. You can read its whole story, but only its keeper can put it through anything.",
+    "emptyChronicle": "Nothing has happened to this Chog yet. That won't last.",
+    "emptyHistory": "No scars, no stories. Give it time.",
+    "locked": "Locked until he's {standing}.",
+    "dailyDone": "He's had enough for today. Come back tomorrow, or feed the lab some $CHOG.",
+    "loading": "The lab is warming up...",
+    "retry": "The lab flickered. Try again?",
+    "wrongNetwork": "Wrong network. The lab only exists on Monad testnet.",
+    "noChog": "You don't have a test Chog yet. Meet one?",
+    "chapter": "Chapter {n}",
+    "chapterNewKeeper": "Under a new keeper",
+    "demoBanner": "Demo mode: nothing here is saved on-chain.",
+    "mockBanner": "Live on Monad testnet with a mock Chog.",
+    "previewBanner": "Preview only. Not recorded on-chain."
+  }
+}

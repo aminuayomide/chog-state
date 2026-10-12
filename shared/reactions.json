@@ -1,0 +1,35 @@
+{
+  "titleAdjectives": { "1": "Melted", "2": "Third-Eyed", "3": "Cracked", "4": "Static", "5": "Weightless", "6": "Haunted", "7": "Marked", "8": "Sugar-Rotted" },
+  "titleNouns": { "0": "Newcomer", "1": "Menace", "2": "Philosopher", "3": "Legend" },
+  "rules": [
+    { "id": "away7d", "awayHours": 168, "text": "He thought you'd forgotten him. He's pretending it's fine." },
+    { "id": "away72h", "awayHours": 72, "text": "He waited by the lab door. For three days." },
+    { "id": "away24h", "awayHours": 24, "text": "He missed you." },
+
+    { "id": "melt1", "scar": 1, "minCount": 1, "text": "He keeps touching his own head, checking it's still there." },
+    { "id": "melt3", "scar": 1, "minCount": 3, "text": "His thoughts arrive late. And slightly melted." },
+    { "id": "melt6", "scar": 1, "minCount": 6, "text": "He hasn't had a calm thought since the incident." },
+    { "id": "eye1", "scar": 2, "minCount": 1, "text": "The new eye blinks out of sync. It's learning." },
+    { "id": "eye3", "scar": 2, "minCount": 3, "text": "He sees you, and also something slightly behind you." },
+    { "id": "eye6", "scar": 2, "minCount": 6, "text": "He no longer needs to look. It looks for him." },
+    { "id": "crack1", "scar": 3, "minCount": 1, "text": "He flinches near clocks." },
+    { "id": "crack3", "scar": 3, "minCount": 3, "text": "Some mornings he has already had the day." },
+    { "id": "crack6", "scar": 3, "minCount": 6, "text": "He remembers next Thursday. It's not going well." },
+    { "id": "static1", "scar": 4, "minCount": 1, "text": "He said \"wen\" unprompted." },
+    { "id": "static3", "scar": 4, "minCount": 3, "text": "Full sentences are getting rare. Vibes only." },
+    { "id": "static6", "scar": 4, "minCount": 6, "text": "He communicates entirely in ticker symbols now." },
+    { "id": "float1", "scar": 5, "minCount": 1, "text": "He keeps drifting about an inch off the ground." },
+    { "id": "float3", "scar": 5, "minCount": 3, "text": "Furniture is just a suggestion to him now." },
+    { "id": "float6", "scar": 5, "minCount": 6, "text": "He's stopped using the floor. The floor understands." },
+    { "id": "ghost1", "scar": 6, "minCount": 1, "text": "Sometimes there are two of him. Only one answers." },
+    { "id": "ghost3", "scar": 6, "minCount": 3, "text": "His echo has opinions." },
+    { "id": "ghost6", "scar": 6, "minCount": 6, "text": "He's no longer sure which one is the original." },
+    { "id": "mark1", "scar": 7, "minCount": 1, "text": "A thin gold line where the beginning went wrong." },
+
+    { "id": "wins3", "minSuccesses": 3, "text": "Every now and then something works. He doesn't trust it." },
+    { "id": "legend", "standing": 3, "text": "He walks like someone who has seen things, and survived." },
+    { "id": "marked", "standing": 2, "text": "The scars are a personality now." },
+    { "id": "known", "standing": 1, "text": "Strangers wave at him now. He waves back, mostly." },
+    { "id": "blank", "standing": 0, "text": "He's quiet. Suspiciously clean." }
+  ]
+}
