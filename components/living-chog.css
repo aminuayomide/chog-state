@@ -1,0 +1,51 @@
+.chog-frame{position:relative;aspect-ratio:1/1;width:100%;border-radius:20px;overflow:hidden;background:#1A1333;border:3px solid #2B2250;isolation:isolate}
+.chog-frame .defs{position:absolute;width:0;height:0}
+.chog-stage{position:absolute;inset:0;will-change:transform}
+.chog-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;user-select:none;-webkit-user-drag:none}
+
+/* standing frames */
+.standing-1{border-color:#B6FF3B;box-shadow:0 0 0 2px #0E0A1F,0 0 18px rgba(182,255,59,.25)}
+.standing-2{border-color:#836EF9;box-shadow:0 0 0 2px #0E0A1F,0 0 0 5px #836EF9,0 0 24px rgba(131,110,249,.45)}
+.standing-3{border-color:#FFD76A;box-shadow:0 0 0 2px #0E0A1F,0 0 0 5px #FFD76A,0 0 32px rgba(255,215,106,.55);animation:gold-pulse 3.2s ease-in-out infinite}
+@keyframes gold-pulse{50%{box-shadow:0 0 0 2px #0E0A1F,0 0 0 5px #FFD76A,0 0 46px rgba(255,215,106,.8)}}
+
+/* weightless: the Chog floats, the shadow stays */
+.chog-shadow{position:absolute;left:20%;right:20%;bottom:2.5%;height:6%;border-radius:50%;background:radial-gradient(ellipse at center,rgba(0,0,0,.65),rgba(0,0,0,0) 70%);filter:blur(2px);z-index:0;animation:shadow-breathe 5s ease-in-out infinite}
+.float-1{--amp:4px;--tilt:1deg;animation:float 5s ease-in-out infinite}
+.float-2{--amp:9px;--tilt:2deg;animation:float 4.4s ease-in-out infinite}
+.float-3{--amp:16px;--tilt:4deg;animation:float 3.8s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(calc(var(--amp)*-1)) rotate(calc(var(--tilt)*-1))}50%{transform:translateY(calc(var(--amp)*-.2)) rotate(var(--tilt))}}
+@keyframes shadow-breathe{0%,100%{transform:scaleX(.8);opacity:.7}50%{transform:scaleX(1);opacity:1}}
+.chog-stage.float-1,.chog-stage.float-2,.chog-stage.float-3{bottom:6%}
+
+/* ghost echo */
+.chog-ghost{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:screen;pointer-events:none;filter:hue-rotate(190deg) brightness(1.25) saturate(1.5)}
+.chog-ghost.g1{opacity:.3;transform:translate(-4%,2%);animation:drift 6s ease-in-out infinite}
+.chog-ghost.g2{opacity:.22;transform:translate(-8%,4%);animation:drift 7s ease-in-out infinite reverse}
+.chog-ghost.g3{opacity:.16;transform:translate(-12%,6%);animation:drift 8s ease-in-out infinite}
+@keyframes drift{50%{transform:translate(-2%,1%)}}
+.tint-cold{position:absolute;inset:0;background:#2a5bff;mix-blend-mode:soft-light;pointer-events:none}
+
+/* time cracks, first mark: whole-image overlays */
+.overlay-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.shimmer{position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 40%,rgba(255,215,106,.35) 50%,transparent 60%);background-size:250% 100%;mix-blend-mode:screen;animation:sweep 4.5s linear infinite}
+@keyframes sweep{from{background-position:150% 0}to{background-position:-100% 0}}
+
+/* meme static */
+.scanlines{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0,rgba(0,0,0,0) 2px,rgba(0,0,0,.18) 3px);mix-blend-mode:multiply}
+.noise{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;mix-blend-mode:overlay;animation:flicker .9s steps(2) infinite}
+@keyframes flicker{50%{opacity:.7}}
+.meme-bubble{position:absolute;padding:2px 8px;border-radius:999px;background:#F4EEFF;color:#0E0A1F;font:700 11px/1.4 ui-monospace,monospace;border:2px solid #0E0A1F;animation:bubble 5s ease-in-out infinite;pointer-events:none}
+@keyframes bubble{0%,100%{transform:translateY(0);opacity:.95}50%{transform:translateY(-10px);opacity:.75}}
+
+/* third eye */
+.third-eye{position:absolute;transform:translate(-50%,-50%);pointer-events:none;filter:drop-shadow(0 0 6px rgba(255,61,129,.9));animation:blink 5.5s infinite}
+@keyframes blink{0%,92%,100%{transform:translate(-50%,-50%) scaleY(1)}95%{transform:translate(-50%,-50%) scaleY(.1)}}
+
+/* boons */
+.spark{position:absolute;width:10px;height:10px;transform:translate(-50%,-50%) rotate(45deg);background:#FFD76A;box-shadow:0 0 10px 3px rgba(255,215,106,.8);animation:twinkle 2.6s ease-in-out infinite;pointer-events:none}
+@keyframes twinkle{0%,100%{opacity:.25;transform:translate(-50%,-50%) rotate(45deg) scale(.6)}50%{opacity:1;transform:translate(-50%,-50%) rotate(45deg) scale(1)}}
+
+/* freeze animations (screenshots, reduced motion) */
+.chog-frame[data-animate="false"] *,.chog-frame[data-animate="false"]{animation:none!important}
+@media (prefers-reduced-motion:reduce){.chog-frame *,.chog-frame{animation:none!important}}
