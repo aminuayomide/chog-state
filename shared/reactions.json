@@ -1,5 +1,5 @@
 {
-  "titleAdjectives": { "1": "Melted", "2": "Third-Eyed", "3": "Cracked", "4": "Static", "5": "Weightless", "6": "Haunted", "7": "Marked", "8": "Sugar-Rotted" },
+  "titleAdjectives": { "1": "Melted", "2": "Third-Eyed", "3": "Cracked", "4": "Static", "5": "Weightless", "6": "Haunted", "7": "Gold-Lined", "8": "Sugar-Rotted" },
   "titleNouns": { "0": "Newcomer", "1": "Menace", "2": "Philosopher", "3": "Legend" },
   "rules": [
     { "id": "away7d", "awayHours": 168, "text": "He thought you'd forgotten him. He's pretending it's fine." },

@@ -12,6 +12,8 @@ export const M = {
 } as const;
 export const STANDING_NAMES = ["Blank", "Known", "Marked", "Legendary"] as const;
 export const DAY = 86400;
+// BigInt constants (no literals like 32n: the Next default tsconfig targets ES2017)
+const N32 = BigInt(32), N48 = BigInt(48), N10000 = BigInt(10000), N2 = BigInt(2), N3 = BigInt(3);
 
 export type Risk = 0 | 1 | 2; // Careful, Normal, Reckless
 
@@ -108,7 +110,7 @@ export function effectiveFailBps(cfg: EngineConfig, ex: ExperimentCfg, risk: Ris
 function gainFor(cfg: EngineConfig, ex: ExperimentCfg, risk: Risk, success: boolean, n: bigint, nowSec: number): number {
   const lo = success ? ex.winMin : ex.failMin;
   const hi = success ? ex.winMax : ex.failMax;
-  const base = lo + Number((n >> 32n) % BigInt(hi - lo + 1));
+  const base = lo + Number((n >> N32) % BigInt(hi - lo + 1));
   if (ex.oncePerToken) return base;
   const riskMul = risk === 0 ? 7000 : risk === 2 ? 15000 : 10000;
   const m = todaysModifier(cfg, nowSec);
@@ -162,13 +164,13 @@ export function runExperiment(
   if (s.runsToday < 255) s.runsToday += 1;
 
   const startLen = s.history.length;
-  const roll = Number(n % 10000n);
+  const roll = Number(n % N10000);
   const success = ex.oncePerToken ? false : roll >= effectiveFailBps(cfg, ex, risk, nowSec);
 
   // resolve
   const gain = gainFor(cfg, ex, risk, success, n, nowSec);
   s.weirdness += gain;
-  const variant = Number((n >> 48n) % (success ? 2n : 3n));
+  const variant = Number((n >> N48) % (success ? N2 : N3));
   const noteId = experimentId * 100 + (success ? 50 + variant : variant);
   let scarId = 0;
   if (success) {
