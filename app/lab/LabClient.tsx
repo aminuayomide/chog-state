@@ -10,6 +10,7 @@ import { fill, noteText, ORIGIN_CINEMATIC, pickLine, STANDING_INFO, UI } from ".
 import { reactionFor, titleFor } from "../../lib/reactions";
 import { nextGoal } from "../../lib/goals";
 import { SCAR_NAMES } from "../../lib/scars";
+import { sfx } from "../../lib/sfx";
 import type { DemoChog } from "../../lib/chogs";
 
 const KIND_ICON: Record<number, string> = { 0: "✕", 1: "✓", 2: "★", 3: "⇄", 4: "⚡" };
@@ -27,8 +28,23 @@ export default function LabClient({ chogs }: { chogs: DemoChog[] }) {
 
   useEffect(() => { setNow(Math.floor(Date.now() / 1000)); }, [st, phase]);
   useEffect(() => {
-    if (st && !isUnlocked(cfg, st, pick)) setPick(st.originDone ? 1 : 0);
+    if (!st) return;
+    if (!st.originDone) { if (pick !== 0) setPick(0); }
+    else if (!isUnlocked(cfg, st, pick)) setPick(1);
   }, [st, pick]);
+
+  // sound follows the phases of a run
+  const [muted, setMuted] = useState(false);
+  useEffect(() => { setMuted(sfx.isMuted()); }, []);
+  useEffect(() => {
+    if (phase === "running") sfx.hum();
+    if (phase === "landed" && last) {
+      if (last.result.success) sfx.win(); else sfx.fail();
+      if (last.result.milestones.length || last.result.combos.length) window.setTimeout(() => sfx.milestone(), 450);
+      if (last.result.standingUp !== null) window.setTimeout(() => sfx.standing(), 800);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase]);
 
   if (chogs.length === 0) {
     return <main className="p-8 text-[#F4EEFF]">No Chog images found in public/chogs (expected chog-&lt;tokenId&gt;.png or .webp).</main>;
@@ -43,7 +59,7 @@ export default function LabClient({ chogs }: { chogs: DemoChog[] }) {
   const goal = nextGoal(st, cfg);
   const mod = todaysModifier(cfg, now);
   const modText = cfg.modifiers[mod.id - 1]?.text;
-  const experiments = Object.values(cfg.experiments).filter((e) => !(e.oncePerToken && st.originDone));
+  const experiments = st.originDone ? Object.values(cfg.experiments).filter((e) => !e.oncePerToken) : [cfg.experiments[0]];
   const showReport = last && (phase === "landed" || phase === "idle");
   const effRisk: Risk = pick === 0 ? 1 : risk;
 
@@ -53,8 +69,14 @@ export default function LabClient({ chogs }: { chogs: DemoChog[] }) {
     : { x: 0, rotate: 0 };
 
   return (
-    <main className="min-h-screen bg-[#0E0A1F] text-[#F4EEFF]">
-      <div className="bg-[#B6FF3B] px-4 py-1 text-center text-xs font-bold uppercase tracking-widest text-[#0E0A1F]">{UI.demoBanner}</div>
+    <main className="min-h-screen bg-[#0E0A1F] pb-28 text-[#F4EEFF]">
+      <div className="relative bg-[#B6FF3B] px-4 py-1 text-center text-xs font-bold uppercase tracking-widest text-[#0E0A1F]">
+        {UI.demoBanner}
+        <button onClick={() => { const m = !muted; sfx.setMuted(m); setMuted(m); if (!m) { sfx.unlock(); sfx.milestone(); } }}
+          className="absolute right-3 top-1/2 -translate-y-1/2 rounded bg-[#0E0A1F] px-2 py-0.5 text-[10px] text-[#B6FF3B]" aria-label="Toggle sound">
+          {muted ? "SFX OFF" : "SFX ON"}
+        </button>
+      </div>
 
       <div className="mx-auto grid max-w-5xl gap-6 p-4 lg:grid-cols-[minmax(0,440px)_1fr]">
         {/* LEFT: the Chog */}
@@ -133,8 +155,6 @@ export default function LabClient({ chogs }: { chogs: DemoChog[] }) {
             })}
           </div>
 
-          <RunButton disabled={busy} label={pick === 0 ? "Begin" : "Run experiment"} onFire={() => run(chog.tokenId, pick, effRisk)} />
-
           <AnimatePresence mode="wait">
             {showReport && last && (
               <motion.div key={`${last.at}-${last.result.seed}`} initial={{ opacity: 0, y: 14, rotate: -1 }} animate={{ opacity: 1, y: 0, rotate: 0 }} exit={{ opacity: 0 }}
@@ -172,6 +192,20 @@ export default function LabClient({ chogs }: { chogs: DemoChog[] }) {
 
           <button onClick={() => reset(chog.tokenId)} disabled={busy} className="text-xs text-[#9B90C4] underline">Reset this Chog</button>
         </section>
+      </div>
+
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t-4 border-[#0E0A1F] bg-[#120C28]/95 p-3 backdrop-blur">
+        <div className="mx-auto flex max-w-5xl items-center gap-3">
+          <div className="min-w-0 flex-1 leading-tight">
+            <div className="truncate text-sm font-bold">{cfg.experiments[pick]?.name}</div>
+            <div className="truncate text-xs text-[#9B90C4]">
+              {pick === 0 ? "The beginning" : UI.risk[String(effRisk) as "0" | "1" | "2"].name} · fails {Math.round(effectiveFailBps(cfg, cfg.experiments[pick], effRisk, now) / 100)}%
+            </div>
+          </div>
+          <div className="w-44 shrink-0 sm:w-60">
+            <RunButton disabled={busy} label={pick === 0 ? "Begin" : "Run"} onFire={() => run(chog.tokenId, pick, effRisk)} />
+          </div>
+        </div>
       </div>
     </main>
   );

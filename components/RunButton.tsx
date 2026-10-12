@@ -1,5 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
+import { sfx } from "../lib/sfx";
 
 const HOLD_MS = 600;
 
@@ -20,12 +21,12 @@ export default function RunButton({ disabled, label, onFire }: { disabled: boole
     <button
       type="button"
       disabled={disabled}
-      onPointerDown={() => { if (disabled) return; start.current = performance.now(); raf.current = requestAnimationFrame(tick); }}
+      onPointerDown={() => { if (disabled) return; sfx.unlock(); sfx.arm(); start.current = performance.now(); raf.current = requestAnimationFrame(tick); }}
       onPointerUp={stop}
       onPointerLeave={stop}
       onPointerCancel={stop}
       onContextMenu={(e) => e.preventDefault()}
-      onKeyDown={(e) => { if (!disabled && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); onFire(); } }}
+      onKeyDown={(e) => { if (!disabled && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); sfx.unlock(); onFire(); } }}
       className="relative w-full select-none overflow-hidden rounded-2xl border-4 border-[#0E0A1F] bg-[#FF3D81] px-6 py-5 text-xl font-black uppercase tracking-wider text-white shadow-[0_6px_0_#7a1b43] transition active:translate-y-1 active:shadow-[0_2px_0_#7a1b43] disabled:cursor-not-allowed disabled:opacity-40"
       style={{ touchAction: "manipulation", WebkitUserSelect: "none" }}
     >
