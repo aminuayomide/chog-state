@@ -1,0 +1,42 @@
+.live-root{min-height:100vh;background:var(--ink,#0B0816);color:var(--paper,#F3ECDD);font-family:var(--font-display),system-ui,sans-serif;background-image:radial-gradient(rgba(243,236,221,.07) 1px,transparent 1px);background-size:22px 22px}
+.live-main{max-width:1120px;margin:0 auto;padding:20px 20px 80px}
+.live-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:28px}
+.brand{display:flex;align-items:center;gap:10px;font:800 14px var(--font-mono),monospace;letter-spacing:.16em}
+.brand-mark{width:18px;height:18px;background:var(--pink);border:2px solid #000;box-shadow:3px 3px 0 var(--lime);transform:rotate(8deg)}
+.top-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.net-pill,.keeper-chip{font:700 11px var(--font-mono),monospace;letter-spacing:.1em;text-transform:uppercase;border:2px solid var(--line);border-radius:999px;padding:6px 12px;color:var(--paper);background:transparent}
+.net-pill i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--chain);margin-right:8px}
+.keeper-chip{cursor:pointer;border-color:var(--lime);color:var(--lime)}
+
+.hero{display:grid;gap:48px;grid-template-columns:1.1fr .9fr;align-items:center;padding-top:8px}
+.eyebrow{font:700 11px var(--font-mono),monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--lime);margin:0 0 14px}
+.h1{font-weight:800;font-size:clamp(42px,7.2vw,82px);line-height:.94;letter-spacing:-.035em;margin:0}
+.h1 mark{background:var(--pink);color:var(--ink);padding:0 .12em;display:inline-block;transform:rotate(-1.5deg)}
+.lead{font-size:18px;line-height:1.5;color:#CFC7E8;max-width:34em;margin:22px 0 28px}
+.cta-row{display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;font:800 16px var(--font-display),sans-serif;border:3px solid #000;border-radius:14px;padding:16px 24px;box-shadow:0 5px 0 rgba(0,0,0,.6);cursor:pointer;transition:transform .12s,box-shadow .12s;text-decoration:none;color:var(--ink)}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.6)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-primary{background:var(--pink)}
+.btn-lime{background:var(--lime)}
+.btn-gold{background:var(--gold)}
+.btn:focus-visible,.keeper-chip:focus-visible,.link:focus-visible{outline:3px dashed var(--gold);outline-offset:3px}
+.link{color:var(--paper);font-weight:700;text-decoration:underline;text-underline-offset:4px}
+.fine{font:600 11px var(--font-mono),monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:22px}
+.note{font-size:14px;margin-top:14px}
+.note.warn{color:var(--gold)} .note.err{color:var(--pink)} .note.ok{color:var(--lime)}
+
+.dash-head h2{font-size:clamp(30px,5vw,48px);font-weight:800;letter-spacing:-.03em;margin:0 0 4px}
+.dash-head p{color:var(--muted);margin:0 0 24px;max-width:36em}
+.panel{background:var(--ink-2);border:2px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:28px}
+.panel.alert{border-color:var(--gold)}
+.mint-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px}
+.mint-row b{font-size:18px}.mint-row p{margin:2px 0 0;color:var(--muted);font-size:13px}
+.grid-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:34px 28px;padding-top:10px}
+.cap{margin-top:14px;font-size:13px;color:#CFC7E8}
+.cap small{display:block;color:var(--muted);font:600 10px var(--font-mono),monospace;letter-spacing:.12em;text-transform:uppercase;margin-top:2px}
+.empty{border:3px dashed var(--line);border-radius:16px;padding:32px;text-align:center;color:var(--muted)}
+.skeleton{height:320px;border-radius:18px;background:linear-gradient(100deg,#17112B 30%,#241B47 50%,#17112B 70%);background-size:200% 100%;animation:shine 1.4s linear infinite}
+@keyframes shine{to{background-position:-200% 0}}
+@media (max-width:860px){.hero{grid-template-columns:1fr;gap:36px}.live-main{padding-inline:16px}}
+@media (prefers-reduced-motion:reduce){.skeleton{animation:none}}

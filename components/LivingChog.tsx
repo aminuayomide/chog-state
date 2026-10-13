@@ -16,6 +16,8 @@ export interface LivingChogProps {
   alt?: string;
   className?: string;
   animate?: boolean;
+  /** Extra hue rotation in degrees (used to tell apart tokens that share demo art). */
+  tint?: number;
 }
 
 const MEME_WORDS = ["wen?", "gm", "lfg", "ngmi"];
@@ -23,7 +25,7 @@ const MEME_SPOTS: [number, number][] = [[7, 12], [60, 9], [68, 46], [10, 62]];
 const SPARKS: [number, number][] = [[18, 24], [80, 18], [74, 72], [24, 78]];
 
 export default function LivingChog({
-  src, scars, standing = 0, boons = 0, tokenId, alt = "Chog", className = "", animate = true,
+  src, scars, standing = 0, boons = 0, tokenId, alt = "Chog", className = "", animate = true, tint = 0,
 }: LivingChogProps) {
   const uid = useId().replace(/[^a-zA-Z0-9]/g, "");
   const L = levelsOf(scars);
@@ -35,10 +37,11 @@ export default function LivingChog({
   if (cracks) { sepia += [0, 0.2, 0.4, 0.6][cracks]; saturate -= [0, 0.05, 0.15, 0.3][cracks]; }
   if (stat) contrast += 0.04 * stat;
   if (ghost) { brightness += 0.02 * ghost; saturate -= 0.04 * ghost; }
+  hue += tint;
   sepia = Math.min(sepia, 0.75);
   const filters: string[] = [];
   if (melt) filters.push(`url(#melt${melt}-${uid})`);
-  if (melt || cracks || stat || ghost) {
+  if (melt || cracks || stat || ghost || tint) {
     filters.push(`sepia(${sepia}) saturate(${saturate}) hue-rotate(${hue}deg) contrast(${contrast}) brightness(${brightness})`);
   }
   const filter = filters.length ? filters.join(" ") : undefined;
