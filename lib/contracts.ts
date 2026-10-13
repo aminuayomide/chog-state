@@ -13,3 +13,8 @@ export const chogAbi = parseAbi([
   "function nextId() view returns (uint256)",
   "function ownerOf(uint256 tokenId) view returns (address)",
 ]);
+
+export const registryAbi = parseAbi([
+  "function getState(uint256 tokenId) view returns ((uint32 weirdness, uint8 standing, uint8 failStreak, uint16 runCount, uint16 successCount, uint16 failCount, bool originDone, uint8 lastExperiment, uint8 combosFound, uint8 runsToday, uint32 runsDay, uint64 lastActive, uint16 milestones) state, address lastKnownOwner)",
+  "function getScarCounts(uint256 tokenId) view returns (uint16[9])",
+]);

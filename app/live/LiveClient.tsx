@@ -7,6 +7,8 @@ import SpecimenCard from "../../components/SpecimenCard";
 import { monadTestnet } from "../../lib/wagmi";
 import { ADDR, chogAbi } from "../../lib/contracts";
 import { useMyChogs } from "../../lib/useMyChogs";
+import { useOnchainState } from "../../lib/useOnchainState";
+import { STANDING_NAMES } from "../../lib/engine";
 import { UI } from "../../lib/notes";
 import type { DemoChog } from "../../lib/chogs";
 
@@ -20,6 +22,7 @@ export default function LiveClient({ chogs }: { chogs: DemoChog[] }) {
   const { disconnect } = useDisconnect();
   const { switchChain, isPending: switching } = useSwitchChain();
   const { ids, loading, refresh } = useMyChogs();
+  const { chain } = useOnchainState(ids);
   const { writeContract, data: hash, isPending: signing, error: mintError, reset } = useWriteContract();
   const receipt = useWaitForTransactionReceipt({ hash });
   const [hasWallet, setHasWallet] = useState(true);
@@ -106,7 +109,7 @@ export default function LiveClient({ chogs }: { chogs: DemoChog[] }) {
               <div className="panel" style={{ borderColor: "var(--gold)" }}>
                 <b>What you can do with these today</b>
                 <p style={{ margin: "6px 0 0", color: "var(--muted)", fontSize: 14, lineHeight: 1.5 }}>
-                  Minting proves you are the keeper. Running experiments on a wallet Chog (scars written to the chain) is the next feature. Until then, play the full game in <Link className="link" href="/lab">Demo Mode</Link>.
+                  Each card shows what is written on-chain for that Chog. Running experiments on a wallet Chog from this screen is the next feature. Until then, play the full game in <Link className="link" href="/lab">Demo Mode</Link>.
                 </p>
               </div>
 
@@ -118,10 +121,10 @@ export default function LiveClient({ chogs }: { chogs: DemoChog[] }) {
                   const a = art(id);
                   return (
                     <div key={id}>
-                      <SpecimenCard no={id} keeper={address ? short(address) : ""} small>
-                        <LivingChog src={a.src} scars={FRESH} tint={a.tint} tokenId={id} alt={`Test Chog number ${id}`} />
+                      <SpecimenCard no={id} keeper={address ? short(address) : ""} standingName={STANDING_NAMES[chain[id]?.standing ?? 0]} small>
+                        <LivingChog src={a.src} scars={chain[id]?.scars ?? FRESH} boons={chain[id]?.successCount ?? 0} tint={a.tint} tokenId={id} alt={`Test Chog number ${id}`} />
                       </SpecimenCard>
-                      <div className="cap">Test Chog Nº {id}<small>mock art · file is empty</small></div>
+                      <div className="cap">Test Chog Nº {id}<small>{chain[id] && chain[id].runCount > 0 ? `on-chain · ${chain[id].runCount} runs · weirdness ${chain[id].weirdness}` : "mock art · on-chain file is empty"}</small></div>
                     </div>
                   );
                 })}
