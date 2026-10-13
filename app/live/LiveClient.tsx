@@ -103,6 +103,13 @@ export default function LiveClient({ chogs }: { chogs: DemoChog[] }) {
                 {receipt.isSuccess && <p className="note ok">Minted. He&apos;s yours now.</p>}
               </div>
 
+              <div className="panel" style={{ borderColor: "var(--gold)" }}>
+                <b>What you can do with these today</b>
+                <p style={{ margin: "6px 0 0", color: "var(--muted)", fontSize: 14, lineHeight: 1.5 }}>
+                  Minting proves you are the keeper. Running experiments on a wallet Chog (scars written to the chain) is the next feature. Until then, play the full game in <Link className="link" href="/lab">Demo Mode</Link>.
+                </p>
+              </div>
+
               <p className="eyebrow">Your Chogs {loading ? "· looking…" : `· ${ids.length}`}</p>
               {loading && ids.length === 0 && <div className="grid-cards"><div className="skeleton" /><div className="skeleton" /></div>}
               {!loading && ids.length === 0 && <div className="empty">{UI.noChog}</div>}

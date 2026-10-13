@@ -40,3 +40,4 @@
 @keyframes shine{to{background-position:-200% 0}}
 @media (max-width:860px){.hero{grid-template-columns:1fr;gap:36px}.live-main{padding-inline:16px}}
 @media (prefers-reduced-motion:reduce){.skeleton{animation:none}}
+.brand{white-space:nowrap}
