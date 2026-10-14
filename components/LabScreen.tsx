@@ -7,6 +7,7 @@ import LivingChog from "./LivingChog";
 import SpecimenCard from "./SpecimenCard";
 import WeirdnessMeter from "./WeirdnessMeter";
 import RunButton from "./RunButton";
+import Chronicle from "./Chronicle";
 import { cfg, type LastRun, type Phase } from "../lib/useDemoGame";
 import { effectiveFailBps, isUnlocked, STANDING_NAMES, todaysModifier, type Risk, type State } from "../lib/engine";
 import { fill, noteText, ORIGIN_CINEMATIC, pickLine, STANDING_INFO, UI } from "../lib/notes";
@@ -173,13 +174,8 @@ export default function LabScreen({ tokenIds, tokenId, onSelect, artFor, st, pha
           </AnimatePresence>
 
           {error && <p className="note err">{error}</p>}
-          <p className="sect">Life so far · {st.history.length}</p>
-          {st.history.length === 0 && <p style={{ color: "var(--muted)" }}>{UI.emptyChronicle}</p>}
-          <ul className="life">
-            {st.history.slice().reverse().slice(0, 8).map((e, i) => (
-              <li key={i} className={e.kind === 2 || e.kind === 4 ? "m" : ""}>{noteText(e.noteId)}</li>
-            ))}
-          </ul>
+          <p className="sect">The Chronicle · {st.history.length}</p>
+          <Chronicle history={st.history} />
           {onReset && <button className="reset" onClick={onReset} disabled={busy}>Reset this Chog</button>}
         </section>
       </div>
