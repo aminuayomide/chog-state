@@ -8,6 +8,7 @@ import { monadTestnet } from "../../lib/wagmi";
 import { ADDR, chogAbi } from "../../lib/contracts";
 import { useMyChogs } from "../../lib/useMyChogs";
 import { useOnchainState } from "../../lib/useOnchainState";
+import LiveLab from "../../components/LiveLab";
 import { STANDING_NAMES } from "../../lib/engine";
 import { UI } from "../../lib/notes";
 import type { DemoChog } from "../../lib/chogs";
@@ -22,10 +23,11 @@ export default function LiveClient({ chogs }: { chogs: DemoChog[] }) {
   const { disconnect } = useDisconnect();
   const { switchChain, isPending: switching } = useSwitchChain();
   const { ids, loading, refresh } = useMyChogs();
-  const { chain } = useOnchainState(ids);
+  const { chain, refreshChain } = useOnchainState(ids);
   const { writeContract, data: hash, isPending: signing, error: mintError, reset } = useWriteContract();
   const receipt = useWaitForTransactionReceipt({ hash });
   const [hasWallet, setHasWallet] = useState(true);
+  const [openId, setOpenId] = useState<number | null>(null);
 
   useEffect(() => { setHasWallet(typeof (window as unknown as { ethereum?: unknown }).ethereum !== "undefined"); }, []);
   useEffect(() => { if (receipt.isSuccess) void refresh(); }, [receipt.isSuccess, refresh]);
@@ -39,6 +41,10 @@ export default function LiveClient({ chogs }: { chogs: DemoChog[] }) {
     const n = Math.max(1, chogs.length);
     return { src: chogs[(id - 1) % n]?.src ?? "", tint: Math.floor((id - 1) / n) * 55 };
   };
+
+  if (openId !== null && address) {
+    return <LiveLab ids={ids} initial={openId} chogs={chogs} keeper={short(address)} onBack={() => { setOpenId(null); void refresh(); void refreshChain(); }} />;
+  }
 
   return (
     <main className="live-main">
@@ -106,13 +112,6 @@ export default function LiveClient({ chogs }: { chogs: DemoChog[] }) {
                 {receipt.isSuccess && <p className="note ok">Minted. He&apos;s yours now.</p>}
               </div>
 
-              <div className="panel" style={{ borderColor: "var(--gold)" }}>
-                <b>What you can do with these today</b>
-                <p style={{ margin: "6px 0 0", color: "var(--muted)", fontSize: 14, lineHeight: 1.5 }}>
-                  Each card shows what is written on-chain for that Chog. Running experiments on a wallet Chog from this screen is the next feature. Until then, play the full game in <Link className="link" href="/lab">Demo Mode</Link>.
-                </p>
-              </div>
-
               <p className="eyebrow">Your Chogs {loading ? "· looking…" : `· ${ids.length}`}</p>
               {loading && ids.length === 0 && <div className="grid-cards"><div className="skeleton" /><div className="skeleton" /></div>}
               {!loading && ids.length === 0 && <div className="empty">{UI.noChog}</div>}
@@ -125,6 +124,7 @@ export default function LiveClient({ chogs }: { chogs: DemoChog[] }) {
                         <LivingChog src={a.src} scars={chain[id]?.scars ?? FRESH} boons={chain[id]?.successCount ?? 0} tint={a.tint} tokenId={id} alt={`Test Chog number ${id}`} />
                       </SpecimenCard>
                       <div className="cap">Test Chog Nº {id}<small>{chain[id] && chain[id].runCount > 0 ? `on-chain · ${chain[id].runCount} runs · weirdness ${chain[id].weirdness}` : "mock art · on-chain file is empty"}</small></div>
+                      <button className="btn btn-primary" style={{ marginTop: 12, width: "100%", padding: "12px 16px" }} onClick={() => setOpenId(id)}>Open in lab</button>
                     </div>
                   );
                 })}
