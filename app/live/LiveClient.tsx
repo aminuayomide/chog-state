@@ -22,12 +22,16 @@ export default function LiveClient({ chogs }: { chogs: DemoChog[] }) {
   const { connect, connectors, isPending: connecting, error: connectError } = useConnect();
   const { disconnect } = useDisconnect();
   const { switchChain, isPending: switching } = useSwitchChain();
-  const { ids, loading, refresh } = useMyChogs();
+  const { ids, loading, loaded, error: listError, refresh } = useMyChogs();
   const { chain, refreshChain } = useOnchainState(ids);
   const { writeContract, data: hash, isPending: signing, error: mintError, reset } = useWriteContract();
   const receipt = useWaitForTransactionReceipt({ hash });
   const [hasWallet, setHasWallet] = useState(true);
   const [openId, setOpenId] = useState<number | null>(null);
+  // /live always opens on the landing page, even if the wallet is still connected from before
+  const [entered, setEntered] = useState(false);
+  const [wantEnter, setWantEnter] = useState(false);
+  useEffect(() => { if (isConnected && wantEnter) setEntered(true); }, [isConnected, wantEnter]);
 
   useEffect(() => { setHasWallet(typeof (window as unknown as { ethereum?: unknown }).ethereum !== "undefined"); }, []);
   useEffect(() => { if (receipt.isSuccess) void refresh(); }, [receipt.isSuccess, refresh]);
@@ -52,13 +56,13 @@ export default function LiveClient({ chogs }: { chogs: DemoChog[] }) {
         <div className="brand"><span className="brand-mark" aria-hidden="true" />CHOG STATE</div>
         <div className="top-right">
           <span className="net-pill"><i aria-hidden="true" />Monad testnet</span>
-          {isConnected && address && (
-            <button className="keeper-chip" onClick={() => disconnect()} title="Disconnect wallet">{short(address)} · disconnect</button>
+          {entered && isConnected && address && (
+            <button className="keeper-chip" onClick={() => { disconnect(); setEntered(false); setWantEnter(false); }} title="Disconnect wallet">{short(address)} · disconnect</button>
           )}
         </div>
       </header>
 
-      {!isConnected ? (
+      {!(entered && isConnected) ? (
         <section className="hero" aria-labelledby="hero-title">
           <div>
             <p className="eyebrow">Specimen file 001 · unclaimed</p>
@@ -67,8 +71,9 @@ export default function LiveClient({ chogs }: { chogs: DemoChog[] }) {
               Chog was born from a failed experiment. Claim one, run it through the lab, and every failure becomes a permanent scar on Monad. Sell it, and the scars go with it.
             </p>
             <div className="cta-row">
-              <button className="btn btn-primary" disabled={connecting || !hasWallet} onClick={() => connect({ connector: connectors[0] })}>
-                {connecting ? "Waiting for your wallet…" : "Connect wallet to claim a Chog"}
+              <button className="btn btn-primary" disabled={connecting || !hasWallet}
+                onClick={() => { if (isConnected) setEntered(true); else { setWantEnter(true); connect({ connector: connectors[0] }); } }}>
+                {connecting ? "Waiting for your wallet…" : isConnected && address ? `Continue as ${short(address)}` : "Connect wallet to claim a Chog"}
               </button>
               <Link href="/lab" className="link">Try the lab first, no wallet</Link>
             </div>
@@ -112,9 +117,15 @@ export default function LiveClient({ chogs }: { chogs: DemoChog[] }) {
                 {receipt.isSuccess && <p className="note ok">Minted. He&apos;s yours now.</p>}
               </div>
 
-              <p className="eyebrow">Your Chogs {loading ? "· looking…" : `· ${ids.length}`}</p>
-              {loading && ids.length === 0 && <div className="grid-cards"><div className="skeleton" /><div className="skeleton" /></div>}
-              {!loading && ids.length === 0 && <div className="empty">{UI.noChog}</div>}
+              <p className="eyebrow">Your Chogs · {loaded ? ids.length : "…"}</p>
+              {!loaded && !listError && <div className="grid-cards"><div className="skeleton" /><div className="skeleton" /></div>}
+              {listError && (
+                <div className="panel alert">
+                  <p style={{ margin: "0 0 12px" }}>Couldn&apos;t load your Chogs. The public test network is busy.</p>
+                  <button className="btn btn-gold" disabled={loading} onClick={() => void refresh()}>{loading ? "Trying…" : "Try again"}</button>
+                </div>
+              )}
+              {loaded && ids.length === 0 && <div className="empty">{UI.noChog}</div>}
               <div className="grid-cards">
                 {ids.map((id) => {
                   const a = art(id);

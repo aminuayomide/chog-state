@@ -46,33 +46,52 @@ function friendly(msg: string): string {
   return "The lab flickered. Try again?";
 }
 
-/** Same shape as the demo game, but every run is a real transaction and the contract rolls the dice. */
-export function useLiveGame(tokenIds: number[]) {
+async function withRetry<T>(fn: () => Promise<T>, tries = 4): Promise<T> {
+  let err: unknown;
+  for (let i = 0; i < tries; i++) {
+    try { return await fn(); } catch (e) { err = e; await sleep(500 * 2 ** i); }
+  }
+  throw err;
+}
+
+/** Same shape as the demo game, but every run is a real transaction and the contract rolls the dice.
+ *  Only the open Chog is loaded (4 requests), and a failed read is retried instead of hanging. */
+export function useLiveGame(tokenId: number) {
   const client = usePublicClient();
   const { writeContractAsync } = useWriteContract();
   const [states, setStates] = useState<Record<number, State>>({});
-  const [ready, setReady] = useState(false);
   const [phase, setPhaseState] = useState<Phase>("idle");
   const [last, setLast] = useState<LastRun | null>(null);
   const [error, setError] = useState("");
+  const [loadError, setLoadError] = useState("");
+  const [loading, setLoading] = useState(false);
   const [txHash, setTxHash] = useState("");
   const phaseRef = useRef<Phase>("idle");
   const statesRef = useRef<Record<number, State>>({});
   const totals = useRef<Record<number, number>>({});
-  const key = tokenIds.join(",");
   const setPhase = (p: Phase) => { phaseRef.current = p; setPhaseState(p); };
 
-  const load = useCallback(async () => {
+  const load = useCallback(async (id: number) => {
     if (!client) return;
-    const out: Record<number, State> = {};
-    await Promise.all(key.split(",").filter(Boolean).map(Number).map(async (id) => {
-      try { const r = await readChain(client, id); out[id] = r.state; totals.current[id] = r.total; } catch { /* skip */ }
-    }));
-    statesRef.current = out; setStates(out); setReady(true);
-  }, [client, key]);
-  useEffect(() => { void load(); }, [load]);
+    setLoading(true); setLoadError("");
+    try {
+      const r = await withRetry(() => readChain(client, id));
+      totals.current[id] = r.total;
+      statesRef.current = { ...statesRef.current, [id]: r.state };
+      setStates(statesRef.current);
+    } catch {
+      setLoadError("The lab can't reach Monad right now. The public test network is busy.");
+    } finally {
+      setLoading(false);
+    }
+  }, [client]);
 
-  const run = useCallback(async (tokenId: number, experimentId: number, risk: Risk) => {
+  useEffect(() => {
+    setLast(null); setError(""); setTxHash("");
+    if (!statesRef.current[tokenId]) void load(tokenId);
+  }, [tokenId, load]);
+
+  const run = useCallback(async (experimentId: number, risk: Risk) => {
     if (phaseRef.current !== "idle" || !client) return;
     const before = statesRef.current[tokenId];
     if (!before) return;
@@ -86,7 +105,7 @@ export function useLiveGame(tokenIds: number[]) {
       const receipt = await client.waitForTransactionReceipt({ hash });
       const ev = parseEventLogs({ abi: runAbi, logs: receipt.logs, eventName: "ExperimentRun" })[0];
       if (!ev) throw new Error("no event");
-      const { state: after, total } = await readChain(client, tokenId);
+      const { state: after, total } = await withRetry(() => readChain(client, tokenId));
       const added = Math.max(0, total - (totals.current[tokenId] ?? before.history.length));
       let entries = after.history.slice(Math.max(0, after.history.length - added));
       const mi = entries.findIndex((e) => e.kind === 0 || e.kind === 1);
@@ -117,7 +136,7 @@ export function useLiveGame(tokenIds: number[]) {
       setError(friendly(e instanceof Error ? e.message : String(e)));
       setPhase("idle");
     }
-  }, [client, writeContractAsync]);
+  }, [client, writeContractAsync, tokenId]);
 
-  return { states, ready, phase, last, error, txHash, run, reload: load };
+  return { st: states[tokenId], loading, loadError, phase, last, error, txHash, run, retry: () => load(tokenId) };
 }

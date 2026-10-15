@@ -17,6 +17,7 @@ export const monadTestnet = defineChain({
 export const config = createConfig({
   chains: [monadTestnet],
   connectors: [injected()],
-  transports: { [monadTestnet.id]: http(rpc) },
+  // retry a throttled public RPC a few times, slowly, instead of failing fast
+  transports: { [monadTestnet.id]: http(rpc, { retryCount: 5, retryDelay: 400 }) },
   ssr: true,
 });
