@@ -1,8 +1,9 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { seededLife } from "./seeded";
 import { defaultConfig, effectiveFailBps, newState, randomSeed, runExperiment, type Risk, type RunResult, type State } from "./engine";
 
-const KEY = "chog-state-demo-v1";
+const KEY = "chog-state-demo-v2";
 export const cfg = defaultConfig();
 
 export type Phase = "idle" | "running" | "pause" | "landed";
@@ -33,8 +34,11 @@ export function useDemoGame(tokenIds: number[]) {
     let saved: Record<number, State> = {};
     try { saved = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch { saved = {}; }
     const init: Record<number, State> = {};
-    for (const id of tokenIds) init[id] = saved[id] ?? newState();
+    const nowSec = Math.floor(Date.now() / 1000);
+    // the first Chog is fresh (so visitors meet the Origin); the others arrive with a seeded past
+    tokenIds.forEach((id, i) => { init[id] = saved[id] ?? seededLife(i, nowSec); });
     store.current = init;
+    persist(init);
     setStates(init);
     setReady(true);
     const ts = timers.current;

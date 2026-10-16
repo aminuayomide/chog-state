@@ -22,7 +22,7 @@ export default function LabClient({ chogs }: { chogs: DemoChog[] }) {
       st={st} phase={phase} last={last}
       onRun={(exp, risk) => run(tokenId, exp, risk)} onReset={() => reset(tokenId)}
       banner="Demo · saved in this browser" keeperLabel="demo"
-      topRight={<Link href="/live" className="link small">Wallet: mint a Chog</Link>}
+      topRight={<><Link href="/compare" className="link small">Compare</Link><Link href="/live" className="link small">Wallet: mint a Chog</Link></>}
     />
   );
 }
